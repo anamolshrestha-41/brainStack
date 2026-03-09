@@ -26,7 +26,7 @@ const startEdit=(note)=>{
 
 const updateNote=(updatedNote)=>{
   setNotes(prev=>
-    prev.map(note=> note.id === updatedNote.id ? updateNote : note)
+    prev.map(note=> note.id === updatedNote.id ? updatedNote : note)
   );
   setEditNote(null)
 }
