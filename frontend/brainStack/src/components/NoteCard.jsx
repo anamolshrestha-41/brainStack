@@ -1,4 +1,8 @@
-export default function NoteCard({note, deleteNote, startEdit}){
+import { useContext } from "react"
+import { NotesContext } from "../contexts/CreateContext"
+
+export default function NoteCard({note}){
+    const{deleteNote, startEdit} = useContext(NotesContext)
     return(
         <div>
             <h3>{note.title}</h3>

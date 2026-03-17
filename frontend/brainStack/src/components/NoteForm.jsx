@@ -1,49 +1,49 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useState } from "react";
+import { NotesContext } from "../contexts/CreateContext";
 
-export default function NoteForm({addNote, editNote, updateNote}){
-    const[note, setNote] = useState({
-        title: '',
-        content: '',
-    }) 
-    const [error, setError]= useState('');
-
+export default function NoteForm(){
+  const {addNote, editNote, updateNote}= useContext(NotesContext)
+  const [formData, setFormData]= useState({
+    title: '',
+    content: ''
+  })
+  const[error, setError]=useState('')
     useEffect(()=>{
         if(editNote){
-            setNote(editNote)
+            setFormData(editNote)
         }
     }, [editNote]);
 
-
-    const handleChange=(e)=>{
-        const {name, value} = e.target;
-        setNote(prev=>({...prev, [name]: value}))
-    }
     const handleSubmit=(e)=>{
         e.preventDefault();
-        if(!note.title || !note.content){
+        if(!formData.title || !formData.content){
             setError("Missing fields.")
             return
         }
         setError('')
         if(editNote){
-            updateNote(note);
+            updateNote(formData);
         }else{
-            addNote(note)
+            addNote(formData)
         } 
-        setNote({title:'', content:''})
-        console.log({...note});
+        setFormData({title:'', content:''})
+        console.log({...formData});
     }
     return(
         <form onSubmit={handleSubmit}>
             <label>Title</label>
             <textarea name="title"
-            value={note.title}
-            onChange={handleChange} />
+            value={formData.title}
+           onChange={(e) =>
+          setFormData({ ...formData, title: e.target.value })
+        } />
               <label>Content</label>
             <textarea name="content"
-            value={note.content}
-            onChange={handleChange} />
+            value={formData.content}
+        onChange={(e) =>
+          setFormData({ ...formData, content: e.target.value })
+        } />
             <button type="submit">{editNote? "Update":"Add"}</button>
             {error && <p>{error}</p> }
         </form>
